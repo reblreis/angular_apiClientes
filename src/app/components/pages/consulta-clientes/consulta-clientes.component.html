@@ -1,0 +1,76 @@
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h4>Consulta de Clientes</h4>
+            <p>Pesquise por clientes cadastrados no sistema.</p>
+
+            <form [formGroup]="form" (ngSubmit)="submit()">
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control"
+                            placeholder="Digite o nome do cliente."
+                            formControlName="nome"/>
+
+                        <div class="text-danger" *ngIf="f['nome'].touched && f['nome'].invalid">
+                            <span *ngIf="f['nome'].errors && f['nome'].errors['required']">
+                                Por favor, informe o nome desejado.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" class="btn btn-primary"
+                            value="Pesquisar Clientes"
+                            [disabled]="form.invalid"/>
+
+                        <a routerLink="/app/cadastro-clientes"
+                            class="btn btn-success ms-2">
+                            Cadastrar Cliente
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" [(ngModel)]="tipoRelatorio"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="1">Formato Excel</option>
+                            <option value="2">Formato PDF</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-secondary"
+                            (click)="gerarRelatorio()">
+                            Gerar Relatório
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive mt-3">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nome do cliente</th>
+                            <th>Email</th>
+                            <th>Data e hora de cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of clientes">
+                            <td>
+                                <img src="{{imgPath}}/{{c.foto}}" height="50"/>
+                            </td>
+                            <td>{{c.nome | uppercase}}</td>
+                            <td>{{c.email | lowercase}}</td>
+                            <td>{{c.dataHoraCadastro | date : 'dd/MM/yyyy HH:mm'}}h</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">Quantidade: {{clientes.length}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
